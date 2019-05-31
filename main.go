@@ -15,16 +15,17 @@ import (
 )
 
 func main() {
-	config.InitDb()
+	db := config.InitDb()
+	defer db.Close()
 	post := builder.NewPost().Title("Title 1").Author("David").Content("asdasdadsadas").Build()
 	r := mux.NewRouter()
 	fmt.Println(post)
 
-	ar := _postRepository.NewPostRepository()
+	pr := _postRepository.NewPostRepository(db)
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
-	au := _postUsecase.NewPostUsecase(ar, timeoutContext)
+	pu := _postUsecase.NewPostUsecase(pr, timeoutContext)
 
-	handler.NewPostHandler(r, au)
+	handler.NewPostHandler(r, pu)
 	http.Handle("/", r)
 	http.ListenAndServe(":8080", nil)
 

@@ -21,7 +21,7 @@ func init() {
 	}
 }
 
-func InitDb() {
+func InitDb() *sql.DB {
 	host := viper.GetString(`database.host`)
 	port := viper.GetString(`database.port`)
 	user := viper.GetString(`database.user`)
@@ -37,7 +37,6 @@ func InitDb() {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
 
 	err = db.Ping()
 	if err != nil {
@@ -45,4 +44,5 @@ func InitDb() {
 	}
 
 	fmt.Println("Successfully connected!")
+	return db
 }

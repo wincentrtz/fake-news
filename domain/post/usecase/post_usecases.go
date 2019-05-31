@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wincentrtz/fake-news/domain/post"
@@ -23,7 +22,7 @@ func NewPostUsecase(a post.Repository, timeout time.Duration) post.Usecase {
 func (a *postUsecase) Fetch() ([]*models.Post, error) {
 	posts, err := a.postRepo.Fetch()
 	if err != nil {
-		fmt.Print("a")
+		return nil, err
 	}
 	return posts, nil
 }

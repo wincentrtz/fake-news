@@ -9,7 +9,7 @@ import (
 	_ "github.com/lib/pq" //pq driver _ import
 )
 
-func main() {
+func InitDb() {
 	host := viper.GetString(`database:host`)
 	port := viper.GetString(`database:port`)
 	user := viper.GetString(`database:user`)

@@ -1,9 +1,9 @@
 {
     "database": {
-        "host": "mysql",
-        "port": "3306",
-        "user": "user",
-        "pass": "password",
-        "name": "article"
+        "host": "fakenews",
+        "port": "5432",
+        "user": "postgres",
+        "pass": "123456",
+        "name": "fakenews"
     }
 }

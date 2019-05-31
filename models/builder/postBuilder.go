@@ -1,6 +1,6 @@
 package builder
 
-import "github.com/wincentrtz/fake-news/post/models"
+import "github.com/wincentrtz/fake-news/models"
 
 type postBuilder struct {
 	title   string

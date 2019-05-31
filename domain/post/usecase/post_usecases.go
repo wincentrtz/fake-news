@@ -1,0 +1,29 @@
+package usecase
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/wincentrtz/fake-news/domain/post"
+	"github.com/wincentrtz/fake-news/models"
+)
+
+type postUsecase struct {
+	postRepo       post.Repository
+	contextTimeout time.Duration
+}
+
+func NewPostUsecase(a post.Repository, timeout time.Duration) post.Usecase {
+	return &postUsecase{
+		postRepo:       a,
+		contextTimeout: timeout,
+	}
+}
+
+func (a *postUsecase) Fetch() ([]*models.Post, error) {
+	posts, err := a.postRepo.Fetch()
+	if err != nil {
+		fmt.Print("a")
+	}
+	return posts, nil
+}

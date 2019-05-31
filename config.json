@@ -1,9 +1,12 @@
 {
+    "context":{
+        "timeout":10
+    },
     "database": {
-        "host": "fakenews",
+        "host": "127.0.0.1",
         "port": "5432",
         "user": "postgres",
-        "pass": "123456",
-        "name": "fakenews"
+        "password": "123456",
+        "dbname": "fakenews"
     }
 }

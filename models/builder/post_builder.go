@@ -11,7 +11,6 @@ type postBuilder struct {
 // PostBuilder builder interface
 type PostBuilder interface {
 	Title(string) PostBuilder
-	Author(string) PostBuilder
 	Content(string) PostBuilder
 	Build() *models.Post
 }
@@ -26,11 +25,6 @@ func (ub *postBuilder) Title(title string) PostBuilder {
 	return ub
 }
 
-func (ub *postBuilder) Author(author string) PostBuilder {
-	ub.author = author
-	return ub
-}
-
 func (ub *postBuilder) Content(content string) PostBuilder {
 	ub.content = content
 	return ub
@@ -39,7 +33,6 @@ func (ub *postBuilder) Content(content string) PostBuilder {
 func (ub *postBuilder) Build() *models.Post {
 	return &models.Post{
 		Title:   ub.title,
-		Author:  ub.author,
 		Content: ub.content,
 	}
 }

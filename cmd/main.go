@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -15,16 +14,13 @@ import (
 	postQueueHandler "github.com/wincentrtz/fake-news/domain/postqueue/handler/rest"
 	_postQueueRepository "github.com/wincentrtz/fake-news/domain/postqueue/repository"
 	_postQueueUsecase "github.com/wincentrtz/fake-news/domain/postqueue/usecase"
-	"github.com/wincentrtz/fake-news/models/builder"
 )
 
 func main() {
 	db := config.InitDb()
 	defer db.Close()
-	post := builder.NewPost().Title("Title 1").Author("David").Content("asdasdadsadas").Build()
 	r := mux.NewRouter()
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
-	fmt.Println(post)
 
 	pr := _repository.NewPostRepository(db)
 	pu := _usecase.NewPostUsecase(pr, timeoutContext)

@@ -19,7 +19,7 @@ func NewPostRepository(Conn *sql.DB) post.Repository {
 }
 
 func (m *postRepository) Fetch() ([]*models.Post, error) {
-	query := "SELECT title, content FROM posts"
+	query := "SELECT id, post_title, post_description FROM posts"
 	rows, err := m.Conn.Query(query)
 	defer rows.Close()
 	if err != nil || rows == nil {
@@ -30,6 +30,7 @@ func (m *postRepository) Fetch() ([]*models.Post, error) {
 	for rows.Next() {
 		t := new(models.Post)
 		err = rows.Scan(
+			&t.Id,
 			&t.Title,
 			&t.Content,
 		)

@@ -6,6 +6,7 @@ import (
 
 	"github.com/wincentrtz/fake-news/domain/postqueue"
 	"github.com/wincentrtz/fake-news/models"
+	"github.com/wincentrtz/fake-news/models/builder"
 )
 
 type postQueueRepository struct {
@@ -29,19 +30,24 @@ func (m *postQueueRepository) FetchPostQueue() ([]*models.PostQueue, error) {
 	posts := make([]*models.PostQueue, 0)
 
 	for rows.Next() {
-		t := new(models.PostQueue)
+		var id int
+		var postID int
+		var postTitle string
+		var progress int
 		err = rows.Scan(
-			&t.Id,
-			&t.PostId,
-			&t.PostTitle,
-			&t.Progress,
+			&id,
+			&postID,
+			&postTitle,
+			&progress,
 		)
+
+		post := builder.NewPostQueue().Id(id).PostId(postID).PostTitle(postTitle).Progress(progress).Build()
 
 		if err != nil {
 			return nil, err
 		}
 
-		posts = append(posts, t)
+		posts = append(posts, post)
 	}
 
 	println(posts)

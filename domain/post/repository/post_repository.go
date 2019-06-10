@@ -6,6 +6,7 @@ import (
 
 	"github.com/wincentrtz/fake-news/domain/post"
 	"github.com/wincentrtz/fake-news/models"
+	"github.com/wincentrtz/fake-news/models/builder"
 )
 
 type postRepository struct {
@@ -28,18 +29,22 @@ func (m *postRepository) Fetch() ([]*models.Post, error) {
 	}
 	posts := make([]*models.Post, 0)
 	for rows.Next() {
-		t := new(models.Post)
+		var id int
+		var title string
+		var description string
 		err = rows.Scan(
-			&t.Id,
-			&t.Title,
-			&t.Content,
+			&id,
+			&title,
+			&description,
 		)
+
+		post := builder.NewPost().Id(id).Title(title).Description(description).Build()
 
 		if err != nil {
 			return nil, err
 		}
 
-		posts = append(posts, t)
+		posts = append(posts, post)
 	}
 	return posts, nil
 }

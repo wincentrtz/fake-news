@@ -27,9 +27,6 @@ func InitDb() *sql.DB {
 	user := viper.GetString(`database.user`)
 	password := viper.GetString(`database.password`)
 	dbname := viper.GetString(`database.dbname`)
-	fmt.Printf("host=%s port=%s user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
@@ -43,6 +40,5 @@ func InitDb() *sql.DB {
 		panic(err)
 	}
 
-	fmt.Println("Successfully connected!")
 	return db
 }

@@ -39,7 +39,25 @@ func createPostQueueTable() {
 	}
 }
 
+func createUserTable() {
+	db := config.InitDb()
+	defer db.Close()
+	schema := `CREATE TABLE users(
+			id serial PRIMARY KEY,
+			name VARCHAR NOT NULL,
+			email VARCHAR NOT NULL,
+			password VARCHAR NOT NULL,
+			created_on TIMESTAMP NOT NULL
+		);`
+
+	_, err := db.Exec(schema)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func main() {
 	createPostTable()
 	createPostQueueTable()
+	createUserTable()
 }

@@ -50,6 +50,5 @@ func (m *postQueueRepository) FetchPostQueue() ([]*models.PostQueue, error) {
 		posts = append(posts, post)
 	}
 
-	println(posts)
 	return posts, nil
 }

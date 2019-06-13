@@ -24,11 +24,10 @@ func main() {
 
 	pr := _repository.NewPostRepository(db)
 	pu := _usecase.NewPostUsecase(pr, timeoutContext)
+	handler.NewPostHandler(r, pu)
 
 	pqr := _postQueueRepository.NewPostQueueRepository(db)
 	pqu := _postQueueUsecase.NewPostQueueUsecase(pqr, timeoutContext)
-
-	handler.NewPostHandler(r, pu)
 	postQueueHandler.NewPostQueueHandler(r, pqu)
 
 	http.Handle("/", r)

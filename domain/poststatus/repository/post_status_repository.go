@@ -99,3 +99,26 @@ func (m *postStatusRepository) FetchPostStatusById(id int) (*models.PostStatus, 
 
 	return post, nil
 }
+
+func (m *postStatusRepository) UpdatePostStatus(id int) (*models.PostStatus, error) {
+	postStatus, err := m.FetchPostStatusById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if postStatus.Status != 2 {
+		postStatus.Status = postStatus.Status + 1
+
+		query := `UPDATE post_status
+			SET status = $1
+			WHERE id = $2`
+
+		_, err = m.Conn.Exec(query, postStatus.Status, postStatus.Id)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return postStatus, nil
+}

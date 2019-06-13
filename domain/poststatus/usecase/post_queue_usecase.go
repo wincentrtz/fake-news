@@ -36,3 +36,11 @@ func (pqu *postStatusUsecase) CreatePostStatus(pqreq request.PostStatusRequest) 
 	}
 	return posts, nil
 }
+
+func (pqu *postStatusUsecase) UpdatePostStatus(id int) (*models.PostStatus, error) {
+	posts, err := pqu.postRepo.UpdatePostStatus(id)
+	if err != nil {
+		return nil, err
+	}
+	return posts, nil
+}

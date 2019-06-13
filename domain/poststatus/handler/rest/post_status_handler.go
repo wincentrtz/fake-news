@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/wincentrtz/fake-news/domain/poststatus"
 	"github.com/wincentrtz/fake-news/models/request"
@@ -21,6 +22,7 @@ func NewPostStatusHandler(r *mux.Router, us poststatus.Usecase) {
 	}
 	r.HandleFunc("/api/post/status", handler.FetchHandler).Methods("GET")
 	r.HandleFunc("/api/post/status", handler.CreateHandler).Methods("POST", "OPTIONS")
+	r.HandleFunc("/api/post/status/{id}", handler.updateStatusHandler).Methods("PATCH", "OPTIONS")
 }
 
 func (pqh *PostStatusHandler) FetchHandler(w http.ResponseWriter, r *http.Request) {
@@ -46,6 +48,22 @@ func (pqh *PostStatusHandler) CreateHandler(w http.ResponseWriter, r *http.Reque
 	if err != nil {
 		panic("ERROR")
 	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(posts)
+}
+
+func (pqh *PostStatusHandler) updateStatusHandler(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+	i, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		panic("ERROR")
+	}
+	posts, err := pqh.PostStatusUseCase.UpdatePostStatus(i)
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(posts)
 }

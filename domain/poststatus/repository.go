@@ -9,4 +9,5 @@ type Repository interface {
 	FetchPostStatus() ([]*models.PostStatus, error)
 	FetchPostStatusById(id int) (*models.PostStatus, error)
 	CreatePostStatus(pqreq request.PostStatusRequest) (*models.PostStatus, error)
+	UpdatePostStatus(id int) (*models.PostStatus, error)
 }

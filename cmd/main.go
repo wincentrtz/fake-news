@@ -11,9 +11,9 @@ import (
 	_repository "github.com/wincentrtz/fake-news/domain/post/repository"
 	_usecase "github.com/wincentrtz/fake-news/domain/post/usecase"
 
-	postQueueHandler "github.com/wincentrtz/fake-news/domain/postqueue/handler/rest"
-	_postQueueRepository "github.com/wincentrtz/fake-news/domain/postqueue/repository"
-	_postQueueUsecase "github.com/wincentrtz/fake-news/domain/postqueue/usecase"
+	postStatusHandler "github.com/wincentrtz/fake-news/domain/poststatus/handler/rest"
+	_postStatusRepository "github.com/wincentrtz/fake-news/domain/poststatus/repository"
+	_postStatusUsecase "github.com/wincentrtz/fake-news/domain/poststatus/usecase"
 )
 
 func main() {
@@ -26,9 +26,9 @@ func main() {
 	pu := _usecase.NewPostUsecase(pr, timeoutContext)
 	handler.NewPostHandler(r, pu)
 
-	pqr := _postQueueRepository.NewPostQueueRepository(db)
-	pqu := _postQueueUsecase.NewPostQueueUsecase(pqr, timeoutContext)
-	postQueueHandler.NewPostQueueHandler(r, pqu)
+	pqr := _postStatusRepository.NewPostStatusRepository(db)
+	pqu := _postStatusUsecase.NewPostStatusUsecase(pqr, timeoutContext)
+	postStatusHandler.NewPostStatusHandler(r, pqu)
 
 	http.Handle("/", r)
 	http.ListenAndServe(":8080", nil)

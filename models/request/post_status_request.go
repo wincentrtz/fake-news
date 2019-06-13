@@ -1,5 +1,5 @@
 package request
 
-type PostQueueRequest struct {
+type PostStatusRequest struct {
 	PostId int `json:"postId"`
 }

@@ -5,27 +5,27 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/wincentrtz/fake-news/domain/postqueue"
+	"github.com/wincentrtz/fake-news/domain/poststatus"
 	"github.com/wincentrtz/fake-news/models/request"
 
 	"github.com/gorilla/mux"
 )
 
-type PostQueueHandler struct {
-	PostQueueUseCase postqueue.Usecase
+type PostStatusHandler struct {
+	PostStatusUseCase poststatus.Usecase
 }
 
-func NewPostQueueHandler(r *mux.Router, us postqueue.Usecase) {
-	handler := &PostQueueHandler{
-		PostQueueUseCase: us,
+func NewPostStatusHandler(r *mux.Router, us poststatus.Usecase) {
+	handler := &PostStatusHandler{
+		PostStatusUseCase: us,
 	}
-	r.HandleFunc("/post/queues", handler.FetchHandler).Methods("GET")
-	r.HandleFunc("/post/queues", handler.CreateHandler).Methods("POST", "OPTIONS")
+	r.HandleFunc("/post/status", handler.FetchHandler).Methods("GET")
+	r.HandleFunc("/post/status", handler.CreateHandler).Methods("POST", "OPTIONS")
 }
 
-func (pqh *PostQueueHandler) FetchHandler(w http.ResponseWriter, r *http.Request) {
+func (pqh *PostStatusHandler) FetchHandler(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
-	posts, err := pqh.PostQueueUseCase.FetchPostQueue()
+	posts, err := pqh.PostStatusUseCase.FetchPostStatus()
 	if err != nil {
 		panic("ERROR")
 	}
@@ -34,15 +34,15 @@ func (pqh *PostQueueHandler) FetchHandler(w http.ResponseWriter, r *http.Request
 	json.NewEncoder(w).Encode(posts)
 }
 
-func (pqh *PostQueueHandler) CreateHandler(w http.ResponseWriter, r *http.Request) {
+func (pqh *PostStatusHandler) CreateHandler(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
 	if (*r).Method == "OPTIONS" {
 		return
 	}
-	var postQueueRequest request.PostQueueRequest
-	_ = json.NewDecoder(r.Body).Decode(&postQueueRequest)
-	fmt.Println(postQueueRequest.PostId)
-	posts, err := pqh.PostQueueUseCase.CreatePostQueue(postQueueRequest)
+	var postStatusRequest request.PostStatusRequest
+	_ = json.NewDecoder(r.Body).Decode(&postStatusRequest)
+	fmt.Println(postStatusRequest.PostId)
+	posts, err := pqh.PostStatusUseCase.CreatePostStatus(postStatusRequest)
 	if err != nil {
 		panic("ERROR")
 	}

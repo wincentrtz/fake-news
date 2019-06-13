@@ -8,20 +8,20 @@ import (
 
 	"github.com/wincentrtz/fake-news/models/request"
 
-	"github.com/wincentrtz/fake-news/domain/postqueue"
+	"github.com/wincentrtz/fake-news/domain/poststatus"
 	"github.com/wincentrtz/fake-news/models"
 	"github.com/wincentrtz/fake-news/models/builder"
 )
 
-type postQueueRepository struct {
+type postStatusRepository struct {
 	Conn *sql.DB
 }
 
-func NewPostQueueRepository(Conn *sql.DB) postqueue.Repository {
-	return &postQueueRepository{Conn}
+func NewPostStatusRepository(Conn *sql.DB) poststatus.Repository {
+	return &postStatusRepository{Conn}
 }
 
-func (m *postQueueRepository) FetchPostQueue() ([]*models.PostStatus, error) {
+func (m *postStatusRepository) FetchPostStatus() ([]*models.PostStatus, error) {
 	query := "SELECT post_status.id, post_id,post_title, status FROM post_status JOIN posts ON (post_status.post_id = posts.id)"
 	rows, err := m.Conn.Query(query)
 	defer rows.Close()
@@ -55,7 +55,7 @@ func (m *postQueueRepository) FetchPostQueue() ([]*models.PostStatus, error) {
 	return posts, nil
 }
 
-func (m *postQueueRepository) CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostStatus, error) {
+func (m *postStatusRepository) CreatePostStatus(pqreq request.PostStatusRequest) (*models.PostStatus, error) {
 
 	var id int
 
@@ -70,7 +70,7 @@ func (m *postQueueRepository) CreatePostQueue(pqreq request.PostQueueRequest) (*
 		return nil, err
 	}
 
-	postStatus, err := m.FetchPostQueueById(id)
+	postStatus, err := m.FetchPostStatusById(id)
 
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (m *postQueueRepository) CreatePostQueue(pqreq request.PostQueueRequest) (*
 	return postStatus, nil
 }
 
-func (m *postQueueRepository) FetchPostQueueById(id int) (*models.PostStatus, error) {
+func (m *postStatusRepository) FetchPostStatusById(id int) (*models.PostStatus, error) {
 
 	var postID int
 	var postTitle string

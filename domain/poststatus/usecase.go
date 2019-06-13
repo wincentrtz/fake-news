@@ -1,4 +1,4 @@
-package postqueue
+package poststatus
 
 import (
 	"github.com/wincentrtz/fake-news/models"
@@ -7,7 +7,7 @@ import (
 
 // Usecase represent the article's usecases
 type Usecase interface {
-	FetchPostQueue() ([]*models.PostStatus, error)
+	FetchPostStatus() ([]*models.PostStatus, error)
 
-	CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostStatus, error)
+	CreatePostStatus(pqreq request.PostStatusRequest) (*models.PostStatus, error)
 }

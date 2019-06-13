@@ -11,7 +11,7 @@ func createPostTable() {
 	defer db.Close()
 	schema := `CREATE TABLE posts(
 			id serial PRIMARY KEY,
-			post_parent_id VARCHAR,
+			post_parent_id integer,
 			post_title VARCHAR,
 			post_description VARCHAR,
 			created_on TIMESTAMP NOT NULL

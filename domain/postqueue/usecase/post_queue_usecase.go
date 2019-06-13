@@ -12,15 +12,23 @@ type postQueueUsecase struct {
 	contextTimeout time.Duration
 }
 
-func NewPostQueueUsecase(a postqueue.Repository, timeout time.Duration) postqueue.Usecase {
+func NewPostQueueUsecase(pqr postqueue.Repository, timeout time.Duration) postqueue.Usecase {
 	return &postQueueUsecase{
-		postRepo:       a,
+		postRepo:       pqr,
 		contextTimeout: timeout,
 	}
 }
 
-func (a *postQueueUsecase) FetchPostQueue() ([]*models.PostQueue, error) {
-	posts, err := a.postRepo.FetchPostQueue()
+func (pqu *postQueueUsecase) FetchPostQueue() ([]*models.PostQueue, error) {
+	posts, err := pqu.postRepo.FetchPostQueue()
+	if err != nil {
+		return nil, err
+	}
+	return posts, nil
+}
+
+func (pqu *postQueueUsecase) CreatePostQueue() (*models.PostQueue, error) {
+	posts, err := pqu.postRepo.CreatePostQueue()
 	if err != nil {
 		return nil, err
 	}

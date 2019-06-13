@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"github.com/wincentrtz/fake-news/domain/postqueue"
 	"github.com/wincentrtz/fake-news/models"
@@ -14,13 +15,11 @@ type postQueueRepository struct {
 }
 
 func NewPostQueueRepository(Conn *sql.DB) postqueue.Repository {
-	return &postQueueRepository{
-		Conn,
-	}
+	return &postQueueRepository{Conn}
 }
 
 func (m *postQueueRepository) FetchPostQueue() ([]*models.PostQueue, error) {
-	query := "SELECT post_queues.post_id, post_id,post_title, progress FROM post_queues JOIN posts ON (post_queues.post_id = posts.id)"
+	query := "SELECT post_queues.id, post_id,post_title, progress FROM post_queues JOIN posts ON (post_queues.post_id = posts.id)"
 	rows, err := m.Conn.Query(query)
 	defer rows.Close()
 	if err != nil || rows == nil {
@@ -41,14 +40,32 @@ func (m *postQueueRepository) FetchPostQueue() ([]*models.PostQueue, error) {
 			&progress,
 		)
 
-		post := builder.NewPostQueue().Id(id).PostId(postID).PostTitle(postTitle).Progress(progress).Build()
-
 		if err != nil {
 			return nil, err
 		}
+
+		post := builder.NewPostQueue().Id(id).PostId(postID).PostTitle(postTitle).Progress(progress).Build()
 
 		posts = append(posts, post)
 	}
 
 	return posts, nil
+}
+
+func (m *postQueueRepository) CreatePostQueue() (*models.PostQueue, error) {
+
+	var id int
+	query := `INSERT INTO post_queues (post_id, progress, created_on)
+		VALUES($1,$2,$3)
+		RETURNING id
+	`
+	err := m.Conn.QueryRow(query, 1, 0, time.Now()).Scan(&id)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	postQueue := builder.NewPostQueue().Id(int(id)).Build()
+
+	return postQueue, nil
 }

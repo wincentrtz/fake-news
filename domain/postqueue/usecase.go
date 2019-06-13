@@ -7,4 +7,6 @@ import (
 // Usecase represent the article's usecases
 type Usecase interface {
 	FetchPostQueue() ([]*models.PostQueue, error)
+
+	CreatePostQueue() (*models.PostQueue, error)
 }

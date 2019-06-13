@@ -3,6 +3,8 @@ package usecase
 import (
 	"time"
 
+	"github.com/wincentrtz/fake-news/models/request"
+
 	"github.com/wincentrtz/fake-news/domain/postqueue"
 	"github.com/wincentrtz/fake-news/models"
 )
@@ -27,8 +29,8 @@ func (pqu *postQueueUsecase) FetchPostQueue() ([]*models.PostQueue, error) {
 	return posts, nil
 }
 
-func (pqu *postQueueUsecase) CreatePostQueue() (*models.PostQueue, error) {
-	posts, err := pqu.postRepo.CreatePostQueue()
+func (pqu *postQueueUsecase) CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostQueue, error) {
+	posts, err := pqu.postRepo.CreatePostQueue(pqreq)
 	if err != nil {
 		return nil, err
 	}

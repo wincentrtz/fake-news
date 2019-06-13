@@ -2,9 +2,11 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/wincentrtz/fake-news/domain/postqueue"
+	"github.com/wincentrtz/fake-news/models/request"
 
 	"github.com/gorilla/mux"
 )
@@ -18,10 +20,11 @@ func NewPostQueueHandler(r *mux.Router, us postqueue.Usecase) {
 		PostQueueUseCase: us,
 	}
 	r.HandleFunc("/postqueues", handler.FetchHandler).Methods("GET")
-	r.HandleFunc("/postqueues", handler.CreateHandler).Methods("POST")
+	r.HandleFunc("/postqueues", handler.CreateHandler).Methods("POST", "OPTIONS")
 }
 
 func (pqh *PostQueueHandler) FetchHandler(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
 	posts, err := pqh.PostQueueUseCase.FetchPostQueue()
 	if err != nil {
 		panic("ERROR")
@@ -32,11 +35,23 @@ func (pqh *PostQueueHandler) FetchHandler(w http.ResponseWriter, r *http.Request
 }
 
 func (pqh *PostQueueHandler) CreateHandler(w http.ResponseWriter, r *http.Request) {
-	posts, err := pqh.PostQueueUseCase.CreatePostQueue()
+	setupResponse(&w, r)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+	var postQueueRequest request.PostQueueRequest
+	_ = json.NewDecoder(r.Body).Decode(&postQueueRequest)
+	fmt.Println(postQueueRequest.PostId)
+	posts, err := pqh.PostQueueUseCase.CreatePostQueue(postQueueRequest)
 	if err != nil {
 		panic("ERROR")
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(posts)
+}
+
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }

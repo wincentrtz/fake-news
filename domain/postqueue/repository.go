@@ -1,9 +1,12 @@
 package postqueue
 
-import "github.com/wincentrtz/fake-news/models"
+import (
+	"github.com/wincentrtz/fake-news/models"
+	"github.com/wincentrtz/fake-news/models/request"
+)
 
 type Repository interface {
 	FetchPostQueue() ([]*models.PostQueue, error)
 
-	CreatePostQueue() (*models.PostQueue, error)
+	CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostQueue, error)
 }

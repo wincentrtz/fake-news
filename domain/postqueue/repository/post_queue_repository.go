@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/wincentrtz/fake-news/models/request"
+
 	"github.com/wincentrtz/fake-news/domain/postqueue"
 	"github.com/wincentrtz/fake-news/models"
 	"github.com/wincentrtz/fake-news/models/builder"
@@ -52,14 +54,16 @@ func (m *postQueueRepository) FetchPostQueue() ([]*models.PostQueue, error) {
 	return posts, nil
 }
 
-func (m *postQueueRepository) CreatePostQueue() (*models.PostQueue, error) {
+func (m *postQueueRepository) CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostQueue, error) {
 
 	var id int
+
+	fmt.Println(pqreq.PostId)
 	query := `INSERT INTO post_queues (post_id, progress, created_on)
 		VALUES($1,$2,$3)
 		RETURNING id
 	`
-	err := m.Conn.QueryRow(query, 1, 0, time.Now()).Scan(&id)
+	err := m.Conn.QueryRow(query, &pqreq.PostId, 0, time.Now()).Scan(&id)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err

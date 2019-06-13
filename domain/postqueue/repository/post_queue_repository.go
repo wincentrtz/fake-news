@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/wincentrtz/fake-news/models/request"
@@ -69,7 +70,32 @@ func (m *postQueueRepository) CreatePostQueue(pqreq request.PostQueueRequest) (*
 		return nil, err
 	}
 
-	postQueue := builder.NewPostQueue().Id(int(id)).Build()
+	postQueue, err := m.FetchPostQueueById(id)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return postQueue, nil
+}
+
+func (m *postQueueRepository) FetchPostQueueById(id int) (*models.PostQueue, error) {
+
+	var postID int
+	var postTitle string
+	var progress int
+
+	query := `
+		SELECT post_id,post_title, progress FROM 
+		post_queues JOIN posts ON (post_queues.post_id = posts.id)
+		where post_queues.id =` + strconv.Itoa(id)
+	err := m.Conn.QueryRow(query).Scan(&postID, &postTitle, &progress)
+
+	if err != nil {
+		return nil, err
+	}
+
+	post := builder.NewPostQueue().Id(id).PostId(postID).PostTitle(postTitle).Progress(progress).Build()
+
+	return post, nil
 }

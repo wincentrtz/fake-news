@@ -19,8 +19,8 @@ func NewPostQueueHandler(r *mux.Router, us postqueue.Usecase) {
 	handler := &PostQueueHandler{
 		PostQueueUseCase: us,
 	}
-	r.HandleFunc("/postqueues", handler.FetchHandler).Methods("GET")
-	r.HandleFunc("/postqueues", handler.CreateHandler).Methods("POST", "OPTIONS")
+	r.HandleFunc("/post/queues", handler.FetchHandler).Methods("GET")
+	r.HandleFunc("/post/queues", handler.CreateHandler).Methods("POST", "OPTIONS")
 }
 
 func (pqh *PostQueueHandler) FetchHandler(w http.ResponseWriter, r *http.Request) {

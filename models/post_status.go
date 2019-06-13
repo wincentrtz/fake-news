@@ -1,8 +1,8 @@
 package models
 
-type PostQueue struct {
+type PostStatus struct {
 	Id        int    `json:"id"`
 	PostId    int    `json:"post_id"`
 	PostTitle string `json:"post_title"`
-	Progress  int    `json:"progress"`
+	Status    int    `json:"status"`
 }

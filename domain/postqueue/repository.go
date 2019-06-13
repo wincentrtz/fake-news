@@ -6,7 +6,7 @@ import (
 )
 
 type Repository interface {
-	FetchPostQueue() ([]*models.PostQueue, error)
-	FetchPostQueueById(id int) (*models.PostQueue, error)
-	CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostQueue, error)
+	FetchPostQueue() ([]*models.PostStatus, error)
+	FetchPostQueueById(id int) (*models.PostStatus, error)
+	CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostStatus, error)
 }

@@ -21,7 +21,7 @@ func NewPostQueueUsecase(pqr postqueue.Repository, timeout time.Duration) postqu
 	}
 }
 
-func (pqu *postQueueUsecase) FetchPostQueue() ([]*models.PostQueue, error) {
+func (pqu *postQueueUsecase) FetchPostQueue() ([]*models.PostStatus, error) {
 	posts, err := pqu.postRepo.FetchPostQueue()
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (pqu *postQueueUsecase) FetchPostQueue() ([]*models.PostQueue, error) {
 	return posts, nil
 }
 
-func (pqu *postQueueUsecase) CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostQueue, error) {
+func (pqu *postQueueUsecase) CreatePostQueue(pqreq request.PostQueueRequest) (*models.PostStatus, error) {
 	posts, err := pqu.postRepo.CreatePostQueue(pqreq)
 	if err != nil {
 		return nil, err

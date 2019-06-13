@@ -82,12 +82,30 @@ func (m *postRepository) CreatePost(pr request.PostRequest) (*models.Post, error
 		return nil, err
 	}
 
+	if pr.Parent == 0 {
+		err := m.UpdateParentPostId(id)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	post, err := m.FetchPostById(id)
 	if err != nil {
 		return nil, err
 	}
 
 	return post, err
+}
+
+func (m *postRepository) UpdateParentPostId(postId int) error {
+	query := "UPDATE posts SET post_parent_id = id WHERE id = " + strconv.Itoa(postId)
+	rows, err := m.Conn.Query(query)
+	defer rows.Close()
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *postRepository) FetchPostById(postId int) (*models.Post, error) {

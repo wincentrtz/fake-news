@@ -60,5 +60,6 @@ func (ub *postBuilder) Build() *models.Post {
 		Parent:      ub.parent,
 		Title:       ub.title,
 		Description: ub.description,
+		Date:        ub.date,
 	}
 }

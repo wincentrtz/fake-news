@@ -6,11 +6,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/wincentrtz/fake-news/models/request"
-
 	"github.com/wincentrtz/fake-news/domain/poststatus"
 	"github.com/wincentrtz/fake-news/models"
 	"github.com/wincentrtz/fake-news/models/builder"
+	"github.com/wincentrtz/fake-news/models/request"
 )
 
 type postStatusRepository struct {
@@ -56,10 +55,8 @@ func (m *postStatusRepository) FetchPostStatus() ([]*models.PostStatus, error) {
 }
 
 func (m *postStatusRepository) CreatePostStatus(pqreq request.PostStatusRequest) (*models.PostStatus, error) {
-
 	var id int
 
-	fmt.Println(pqreq.PostId)
 	query := `INSERT INTO post_status (post_id, status, created_on)
 		VALUES($1,$2,$3)
 		RETURNING id

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wincentrtz/fake-news/domain/post"
 	"github.com/wincentrtz/fake-news/models"
+	"github.com/wincentrtz/fake-news/models/request"
 )
 
 type postUsecase struct {
@@ -12,15 +13,23 @@ type postUsecase struct {
 	contextTimeout time.Duration
 }
 
-func NewPostUsecase(a post.Repository, timeout time.Duration) post.Usecase {
+func NewPostUsecase(pr post.Repository, timeout time.Duration) post.Usecase {
 	return &postUsecase{
-		postRepo:       a,
+		postRepo:       pr,
 		contextTimeout: timeout,
 	}
 }
 
-func (a *postUsecase) Fetch() ([]*models.Post, error) {
-	posts, err := a.postRepo.Fetch()
+func (pu *postUsecase) FetchPost() ([]*models.Post, error) {
+	posts, err := pu.postRepo.FetchPost()
+	if err != nil {
+		return nil, err
+	}
+	return posts, nil
+}
+
+func (pu *postUsecase) CreatePost(pr request.PostRequest) (*models.Post, error) {
+	posts, err := pu.postRepo.CreatePost(pr)
 	if err != nil {
 		return nil, err
 	}

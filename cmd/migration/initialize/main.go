@@ -12,8 +12,8 @@ func createPostTable() {
 	schema := `CREATE TABLE posts(
 			id serial PRIMARY KEY,
 			post_parent_id VARCHAR,
-			post_title VARCHAR UNIQUE NOT NULL,
-			post_description VARCHAR NOT NULL,
+			post_title VARCHAR,
+			post_description VARCHAR,
 			created_on TIMESTAMP NOT NULL
 		);`
 

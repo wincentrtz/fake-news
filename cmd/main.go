@@ -17,10 +17,6 @@ import (
 	postStatusHandler "github.com/wincentrtz/fake-news/domain/poststatus/handler/rest"
 	_postStatusRepository "github.com/wincentrtz/fake-news/domain/poststatus/repository"
 	_postStatusUsecase "github.com/wincentrtz/fake-news/domain/poststatus/usecase"
-
-	shareHandler "github.com/wincentrtz/fake-news/domain/share/handler/rest"
-	_shareRepository "github.com/wincentrtz/fake-news/domain/share/repository"
-	_shareUsecase "github.com/wincentrtz/fake-news/domain/share/usecase"
 )
 
 func main() {
@@ -31,7 +27,6 @@ func main() {
 
 	registerPostHandler(r, timeoutContext, db)
 	registerStatusHandler(r, timeoutContext, db)
-	registerShareHandler(r, timeoutContext, db)
 
 	fmt.Println("Starting..")
 	http.Handle("/", r)
@@ -48,10 +43,4 @@ func registerStatusHandler(r *mux.Router, timeoutContext time.Duration, db *sql.
 	pqr := _postStatusRepository.NewPostStatusRepository(db)
 	pqu := _postStatusUsecase.NewPostStatusUsecase(pqr, timeoutContext)
 	postStatusHandler.NewPostStatusHandler(r, pqu)
-}
-
-func registerShareHandler(r *mux.Router, timeoutContext time.Duration, db *sql.DB) {
-	sr := _shareRepository.NewShareRepository(db)
-	su := _shareUsecase.NewShareUsecase(sr, timeoutContext)
-	shareHandler.NewShareHandler(r, su)
 }

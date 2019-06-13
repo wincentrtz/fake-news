@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -41,13 +40,15 @@ func (pqh *PostStatusHandler) CreateHandler(w http.ResponseWriter, r *http.Reque
 	if (*r).Method == "OPTIONS" {
 		return
 	}
+
 	var postStatusRequest request.PostStatusRequest
 	_ = json.NewDecoder(r.Body).Decode(&postStatusRequest)
-	fmt.Println(postStatusRequest.PostId)
+
 	posts, err := pqh.PostStatusUseCase.CreatePostStatus(postStatusRequest)
 	if err != nil {
 		panic("ERROR")
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(posts)
 }

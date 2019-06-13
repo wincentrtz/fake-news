@@ -19,8 +19,8 @@ func NewPostStatusHandler(r *mux.Router, us poststatus.Usecase) {
 	handler := &PostStatusHandler{
 		PostStatusUseCase: us,
 	}
-	r.HandleFunc("/post/status", handler.FetchHandler).Methods("GET")
-	r.HandleFunc("/post/status", handler.CreateHandler).Methods("POST", "OPTIONS")
+	r.HandleFunc("/api/post/status", handler.FetchHandler).Methods("GET")
+	r.HandleFunc("/api/post/status", handler.CreateHandler).Methods("POST", "OPTIONS")
 }
 
 func (pqh *PostStatusHandler) FetchHandler(w http.ResponseWriter, r *http.Request) {

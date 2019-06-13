@@ -16,7 +16,7 @@ func NewPostHandler(r *mux.Router, us post.Usecase) {
 	handler := &PostHandler{
 		AUsecase: us,
 	}
-	r.HandleFunc("/posts", handler.FetchHandler).Methods("GET")
+	r.HandleFunc("/api/posts", handler.FetchHandler).Methods("GET")
 }
 
 // FetchArticle will fetch the article based on given params

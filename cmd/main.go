@@ -21,6 +21,10 @@ import (
 	userHandler "github.com/wincentrtz/fake-news/domain/user/handler/rest"
 	_userRepository "github.com/wincentrtz/fake-news/domain/user/repository"
 	_userUsecase "github.com/wincentrtz/fake-news/domain/user/usecase"
+
+	chartHandler "github.com/wincentrtz/fake-news/domain/chart/handler/rest"
+	_chartRepository "github.com/wincentrtz/fake-news/domain/chart/repository"
+	_chartUsecase "github.com/wincentrtz/fake-news/domain/chart/usecase"
 )
 
 func main() {
@@ -32,6 +36,7 @@ func main() {
 	registerPostHandler(r, timeoutContext, db)
 	registerStatusHandler(r, timeoutContext, db)
 	registerUserHandler(r, timeoutContext, db)
+	registerChartHandler(r, timeoutContext, db)
 
 	fmt.Println("Starting..")
 	http.Handle("/", r)
@@ -54,4 +59,10 @@ func registerUserHandler(r *mux.Router, timeoutContext time.Duration, db *sql.DB
 	ur := _userRepository.NewUserRepository(db)
 	us := _userUsecase.NewUserUsecase(ur, timeoutContext)
 	userHandler.NewUserHandler(r, us)
+}
+
+func registerChartHandler(r *mux.Router, timeoutContext time.Duration, db *sql.DB) {
+	cr := _chartRepository.NewChartRepository(db)
+	cs := _chartUsecase.NewChartUsecase(cr, timeoutContext)
+	chartHandler.NewChartHandler(r, cs)
 }
